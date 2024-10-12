@@ -1,24 +1,87 @@
-<!DOCTYPE html><html class="default" lang="en"><head><meta charset="utf-8"/><meta http-equiv="x-ua-compatible" content="IE=edge"/><title>@karmaniverous/batchable</title><meta name="description" content="Documentation for @karmaniverous/batchable"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="assets/style.css"/><link rel="stylesheet" href="assets/highlight.css"/><script defer src="assets/main.js"></script><script async src="assets/icons.js" id="tsd-icons-script"></script><script async src="assets/search.js" id="tsd-search-script"></script><script async src="assets/navigation.js" id="tsd-nav-script"></script></head><body><script>document.documentElement.dataset.theme = localStorage.getItem("tsd-theme") || "os";document.body.style.display="none";setTimeout(() => app?app.showPage():document.body.style.removeProperty("display"),500)</script><header class="tsd-page-toolbar"><div class="tsd-toolbar-contents container"><div class="table-cell" id="tsd-search" data-base="."><div class="field"><label for="tsd-search-field" class="tsd-widget tsd-toolbar-icon search no-caption"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><use href="assets/icons.svg#icon-search"></use></svg></label><input type="text" id="tsd-search-field" aria-label="Search"/></div><div class="field"><div id="tsd-toolbar-links"></div></div><ul class="results"><li class="state loading">Preparing search index...</li><li class="state failure">The search index is not available</li></ul><a href="https://github.com/karmaniverous/batchable" class="title">@karmaniverous/batchable</a></div><div class="table-cell" id="tsd-widgets"><a href="#" class="tsd-widget tsd-toolbar-icon menu no-caption" data-toggle="menu" aria-label="Menu"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><use href="assets/icons.svg#icon-menu"></use></svg></a></div></div></header><div class="container container-main"><div class="col-content"><div class="tsd-page-title"><h1>@karmaniverous/batchable</h1></div><div class="tsd-panel tsd-typography"><a id="md:batchable" class="tsd-anchor"></a><h1 class="tsd-anchor-link">batchable<a href="#md:batchable" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h1><p><strong>EntityManager implements rational indexing &amp; cross-shard querying at scale in your NoSQL database so you can focus on your application logic.</strong></p>
-<p>I've just released a full Typescript refactor. Everything works beatuifully, but I'm still fleshing out <a href="https://karmanivero.us/projects/batchable/intro/" target="_blank" class="external">the documentation</a>.</p>
-<p>If you have any questions, please <a href="https://github.com/karmaniverous/batchable/discussions" target="_blank" class="external">start a discussion</a>. Otherwise stay tuned!</p>
-<a id="md:why" class="tsd-anchor"></a><h2 class="tsd-anchor-link">Why?<a href="#md:why" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2><p>Traditional relational database systems like MySQL or SQL Server implement indexing &amp; scaling strategies at a platform level based on schemas defined at design time.</p>
-<p>NoSQL platforms like DynamoDB offer far better performance at scale, but structured index &amp; shard keys must be defined as data elements and exploited by application logic in data retrieval &amp; cross-shard queries. <strong>They shift the burden of complexity from the database platform to the developer!</strong></p>
-<p>EntityManager encapsulates a provider-agnostic, highly opinionated approach to the <a href="https://aws.amazon.com/blogs/compute/creating-a-single-table-design-with-amazon-dynamodb/" target="_blank" class="external">single-table design pattern</a>.</p>
-<p>With EntityManager, you can:</p>
-<ul>
-<li>
-<p>Define related data entities &amp; structured keys wth a simple, declarative configuration format.</p>
-</li>
-<li>
-<p>Specify a partition sharding strategy that maximizes query performance while permitting planned, staged scaling over time.</p>
-</li>
-<li>
-<p>Add or remove structured index keys from entity data objects with a single method call.</p>
-</li>
-<li>
-<p>Perform paged, cross-shard, multi-index queries with a single method call.</p>
-</li>
-</ul>
+<!DOCTYPE html><html class="default" lang="en"><head><meta charset="utf-8"/><meta http-equiv="x-ua-compatible" content="IE=edge"/><title>@karmaniverous/batchable</title><meta name="description" content="Documentation for @karmaniverous/batchable"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="assets/style.css"/><link rel="stylesheet" href="assets/highlight.css"/><script defer src="assets/main.js"></script><script async src="assets/icons.js" id="tsd-icons-script"></script><script async src="assets/search.js" id="tsd-search-script"></script><script async src="assets/navigation.js" id="tsd-nav-script"></script></head><body><script>document.documentElement.dataset.theme = localStorage.getItem("tsd-theme") || "os";document.body.style.display="none";setTimeout(() => app?app.showPage():document.body.style.removeProperty("display"),500)</script><header class="tsd-page-toolbar"><div class="tsd-toolbar-contents container"><div class="table-cell" id="tsd-search" data-base="."><div class="field"><label for="tsd-search-field" class="tsd-widget tsd-toolbar-icon search no-caption"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><use href="assets/icons.svg#icon-search"></use></svg></label><input type="text" id="tsd-search-field" aria-label="Search"/></div><div class="field"><div id="tsd-toolbar-links"></div></div><ul class="results"><li class="state loading">Preparing search index...</li><li class="state failure">The search index is not available</li></ul><a href="https://github.com/karmaniverous/batchable" class="title">@karmaniverous/batchable</a></div><div class="table-cell" id="tsd-widgets"><a href="#" class="tsd-widget tsd-toolbar-icon menu no-caption" data-toggle="menu" aria-label="Menu"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><use href="assets/icons.svg#icon-menu"></use></svg></a></div></div></header><div class="container container-main"><div class="col-content"><div class="tsd-page-title"><h1>@karmaniverous/batchable</h1></div><div class="tsd-panel tsd-typography"><a id="md:batchable-mixin" class="tsd-anchor"></a><h1 class="tsd-anchor-link">Batchable Mixin<a href="#md:batchable-mixin" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h1><p><strong>In the real world, most async operations against large data sets need to be batched and throttled.</strong></p>
+<p>The <a href="https://docs.karmanivero.us/batchable/functions/Batchable.html" target="_blank" class="external"><code>Batchable</code></a> mixin adds a public <code>batchProcess</code> method to your Typescript or Javascript class, providing a simple, configurable pattern for batching and throttling async operations.</p>
+<p>Batchable and any derived classes are <a href="https://github.com/karmaniverous/loggable" target="_blank" class="external">Loggable</a>, so you can configurably track the progress of batch operations on the console or with an injected logging dependency.</p>
+<a id="md:installation" class="tsd-anchor"></a><h2 class="tsd-anchor-link">Installation<a href="#md:installation" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2><pre><code class="bash"><span class="hl-0">npm</span><span class="hl-1"> </span><span class="hl-2">i</span><span class="hl-1"> </span><span class="hl-2">@karmaniverous/batchable</span>
+</code><button type="button">Copy</button></pre>
+
+<a id="md:default-use-case" class="tsd-anchor"></a><h2 class="tsd-anchor-link">Default Use Case<a href="#md:default-use-case" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2><pre><code class="ts"><span class="hl-3">import</span><span class="hl-1"> { </span><span class="hl-4">Batchable</span><span class="hl-1"> } </span><span class="hl-3">from</span><span class="hl-1"> </span><span class="hl-2">&#39;@karmaniverous/batchable&#39;</span><span class="hl-1">;</span><br/><br/><span class="hl-5">type</span><span class="hl-1"> </span><span class="hl-6">Item</span><span class="hl-1"> = </span><span class="hl-6">Record</span><span class="hl-1">&lt;</span><span class="hl-6">string</span><span class="hl-1">, </span><span class="hl-6">unknown</span><span class="hl-1">&gt;; </span><span class="hl-7">// Your data type.</span><br/><br/><span class="hl-7">// Say you have an function processBatch that processes a batch of items, for</span><br/><span class="hl-7">// example writing them to a database. Maybe not every item is processed</span><br/><span class="hl-7">// successfully, so the function returns a count of processed items and an</span><br/><span class="hl-7">// array of unprocessed ones.</span><br/><br/><span class="hl-5">interface</span><span class="hl-1"> </span><span class="hl-6">AsyncResult</span><span class="hl-1"> {</span><br/><span class="hl-1">  </span><span class="hl-4">processed</span><span class="hl-1">: </span><span class="hl-6">number</span><span class="hl-1">;</span><br/><span class="hl-1">  </span><span class="hl-4">unprocessed</span><span class="hl-1">: </span><span class="hl-6">Item</span><span class="hl-1">[];</span><br/><span class="hl-1">}</span><br/><br/><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-0">processBatch</span><span class="hl-1"> = </span><span class="hl-5">async</span><span class="hl-1"> (</span><span class="hl-4">items</span><span class="hl-1">: </span><span class="hl-6">Item</span><span class="hl-1">[]): </span><span class="hl-6">AsyncResult</span><span class="hl-1"> </span><span class="hl-5">=&gt;</span><br/><span class="hl-1">  </span><span class="hl-0">doSomethingAsync</span><span class="hl-1">(</span><span class="hl-4">items</span><span class="hl-1">);</span><br/><br/><span class="hl-7">// Let&#39;s write a function that extracts any unprocessed items from an</span><br/><span class="hl-7">// AsyncResult.</span><br/><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-0">extractUnprocessedItems</span><span class="hl-1"> = ({ </span><span class="hl-4">unprocessed</span><span class="hl-1"> }: </span><span class="hl-6">AsyncResult</span><span class="hl-1">) </span><span class="hl-5">=&gt;</span><span class="hl-1"> </span><span class="hl-4">unprocessed</span><span class="hl-1">;</span><br/><br/><span class="hl-7">// Now let&#39;s create a class that keeps an array of Item and uses batchProcess</span><br/><span class="hl-7">// from the Batchable mixin to process them. Unless otherwise specified,</span><br/><span class="hl-7">// default Batchable options are:</span><br/><span class="hl-7">// - batchSize: 25</span><br/><span class="hl-7">// - delayIncrement: 100</span><br/><span class="hl-7">// - maxRetries: 5</span><br/><span class="hl-7">// - throttle: 10</span><br/><span class="hl-5">class</span><span class="hl-1"> </span><span class="hl-6">MyBatchableClass</span><span class="hl-1"> </span><span class="hl-5">extends</span><span class="hl-1"> </span><span class="hl-0">Batchable</span><span class="hl-1">() {</span><br/><span class="hl-1">  </span><span class="hl-4">items</span><span class="hl-1">: </span><span class="hl-6">Item</span><span class="hl-1">[] = []; </span><span class="hl-7">// Your class data.</span><br/><br/><span class="hl-1">  </span><span class="hl-5">async</span><span class="hl-1"> </span><span class="hl-0">processItems</span><span class="hl-1">() {</span><br/><span class="hl-1">    </span><span class="hl-7">// batchProcess will...</span><br/><span class="hl-1">    </span><span class="hl-7">// - break items into batches of no more than `batchSize` items, and</span><br/><span class="hl-1">    </span><span class="hl-7">// - process up to `throttle` batches in parallel, and</span><br/><span class="hl-1">    </span><span class="hl-7">// - write a debug log message for each batch attempted, and</span><br/><span class="hl-1">    </span><span class="hl-7">// - wait `delayIncrement` ms with exponential backoff to retry failed batches, and</span><br/><span class="hl-1">    </span><span class="hl-7">// - throw an exception after `maxRetries` failed retries, and</span><br/><span class="hl-1">    </span><span class="hl-7">// - return an array of AsyncResults generated during batch processing.</span><br/><span class="hl-1">    </span><span class="hl-3">return</span><span class="hl-1"> </span><span class="hl-5">this</span><span class="hl-1">.</span><span class="hl-0">batchProcess</span><span class="hl-1">(</span><span class="hl-5">this</span><span class="hl-1">.</span><span class="hl-4">items</span><span class="hl-1">, </span><span class="hl-4">processBatch</span><span class="hl-1">, </span><span class="hl-4">extractUnprocessedItems</span><span class="hl-1">);</span><br/><span class="hl-1">  }</span><br/><span class="hl-1">}</span>
+</code><button type="button">Copy</button></pre>
+
+<a id="md:customizing-batchable" class="tsd-anchor"></a><h2 class="tsd-anchor-link">Customizing Batchable<a href="#md:customizing-batchable" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2><p>The Batchable function takes the following parameters:</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Base</code></td>
+<td><code>Constructor</code></td>
+<td><code>class {}</code></td>
+<td>The base class to extend.</td>
+</tr>
+<tr>
+<td><code>batchableOptions</code></td>
+<td><code>BatchableOptions</code></td>
+<td><code>{}</code></td>
+<td>Overrides to default Batchable options. These will apply to all calls to <code>processItems</code> within a given class instance unless overridden at the function call.</td>
+</tr>
+<tr>
+<td><code>logger</code></td>
+<td>Logger object.</td>
+<td><code>console</code></td>
+<td>The logger object to use for logging. Accessible on the class instance at <code>this.logger</code>.</td>
+</tr>
+<tr>
+<td><code>loggableOptions</code></td>
+<td><a href="https://docs.karmanivero.us/loggable/interfaces/loggable.LoggableOptions.html" target="_blank" class="external"><code>LoggableOptions</code></a></td>
+<td><code>{}</code></td>
+<td>Overrides to default Loggable options. Accessible on the class instance at <code>this.loggableOptions</code>.</td>
+</tr>
+</tbody>
+</table>
+<p>Default Batchable options are:</p>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>batchSize</code></td>
+<td><code>number</code></td>
+<td><code>25</code></td>
+<td>The number of items to process in each batch.</td>
+</tr>
+<tr>
+<td><code>delayIncrement</code></td>
+<td><code>number</code></td>
+<td><code>100</code></td>
+<td>The number of milliseconds to wait before retrying a failed batch, with 2x exponential backoff.</td>
+</tr>
+<tr>
+<td><code>maxRetries</code></td>
+<td><code>number</code></td>
+<td><code>5</code></td>
+<td>The number of times to retry a failed batch before throwing an exception.</td>
+</tr>
+<tr>
+<td><code>throttle</code></td>
+<td><code>number</code></td>
+<td><code>10</code></td>
+<td>The number of batches to process in parallel.</td>
+</tr>
+</tbody>
+</table>
+<p><a href="https://github.com/karmaniverous/loggable" target="_blank" class="external">Click here</a> more information on the Loggable mixin.</p>
 <hr>
 <p>Built for you with ❤️ on Bali! Find more great tools &amp; templates on <a href="https://github.com/karmaniverous" target="_blank" class="external">my GitHub Profile</a>.</p>
-</div></div><div class="col-sidebar"><div class="page-menu"><div class="tsd-navigation settings"><details class="tsd-accordion"><summary class="tsd-accordion-summary"><h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><use href="assets/icons.svg#icon-chevronDown"></use></svg>Settings</h3></summary><div class="tsd-accordion-details"><div class="tsd-filter-visibility"><span class="settings-label">Member Visibility</span><ul id="tsd-filter-options"><li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-external" name="external"/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>External</span></label></li><li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-protected" name="protected"/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>Protected</span></label></li></ul></div><div class="tsd-theme-toggle"><label class="settings-label" for="tsd-theme">Theme</label><select id="tsd-theme"><option value="os">OS</option><option value="light">Light</option><option value="dark">Dark</option></select></div></div></details></div><details open class="tsd-accordion tsd-page-navigation"><summary class="tsd-accordion-summary"><h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><use href="assets/icons.svg#icon-chevronDown"></use></svg>On This Page</h3></summary><div class="tsd-accordion-details"><a href="#md:batchable"><span>batchable</span></a><ul><li><a href="#md:why"><span>Why?</span></a></li></ul></div></details></div><div class="site-menu"><nav class="tsd-navigation"><a href="modules.html" class="current"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="assets/icons.svg#icon-1"></use></svg><span>@karmaniverous/batchable</span></a><ul class="tsd-small-nested-navigation" id="tsd-nav-container" data-base="."><li>Loading...</li></ul></nav></div></div></div><footer><p class="tsd-generator">Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p></footer><div class="overlay"></div></body></html>
+</div></div><div class="col-sidebar"><div class="page-menu"><div class="tsd-navigation settings"><details class="tsd-accordion"><summary class="tsd-accordion-summary"><h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><use href="assets/icons.svg#icon-chevronDown"></use></svg>Settings</h3></summary><div class="tsd-accordion-details"><div class="tsd-filter-visibility"><span class="settings-label">Member Visibility</span><ul id="tsd-filter-options"><li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-external" name="external"/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>External</span></label></li><li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-protected" name="protected"/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>Protected</span></label></li></ul></div><div class="tsd-theme-toggle"><label class="settings-label" for="tsd-theme">Theme</label><select id="tsd-theme"><option value="os">OS</option><option value="light">Light</option><option value="dark">Dark</option></select></div></div></details></div><details open class="tsd-accordion tsd-page-navigation"><summary class="tsd-accordion-summary"><h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><use href="assets/icons.svg#icon-chevronDown"></use></svg>On This Page</h3></summary><div class="tsd-accordion-details"><a href="#md:batchable-mixin"><span>Batchable <wbr/>Mixin</span></a><ul><li><a href="#md:installation"><span>Installation</span></a></li><li><a href="#md:default-use-case"><span>Default <wbr/>Use <wbr/>Case</span></a></li><li><a href="#md:customizing-batchable"><span>Customizing <wbr/>Batchable</span></a></li></ul></div></details></div><div class="site-menu"><nav class="tsd-navigation"><a href="modules.html" class="current"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="assets/icons.svg#icon-1"></use></svg><span>@karmaniverous/batchable</span></a><ul class="tsd-small-nested-navigation" id="tsd-nav-container" data-base="."><li>Loading...</li></ul></nav></div></div></div><footer><p class="tsd-generator">Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p></footer><div class="overlay"></div></body></html>

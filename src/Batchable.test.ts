@@ -44,7 +44,7 @@ describe('Batchable', function () {
 
     const batchable = new (Batchable())();
 
-    const output = await batchable.batchExecute(
+    const output = await batchable.batchProcess(
       items,
       batchHandler,
       extractUnprocessedItems,
@@ -63,7 +63,7 @@ describe('Batchable', function () {
 
     const batchable = new (Batchable())();
 
-    const output = await batchable.batchExecute(
+    const output = await batchable.batchProcess(
       items,
       batchHandler,
       extractUnprocessedItems,
@@ -86,7 +86,7 @@ describe('Batchable', function () {
     const batchable = new (Batchable())();
 
     expect(
-      batchable.batchExecute(items, batchHandler, extractUnprocessedItems),
+      batchable.batchProcess(items, batchHandler, extractUnprocessedItems),
     ).to.be.eventually.rejectedWith('max retries exceeded');
   });
 
@@ -99,7 +99,7 @@ describe('Batchable', function () {
 
     const batchable = new (Batchable(undefined, { batchSize: 2 }))();
 
-    const output = await batchable.batchExecute(
+    const output = await batchable.batchProcess(
       items,
       batchHandler,
       extractUnprocessedItems,
@@ -121,7 +121,7 @@ describe('Batchable', function () {
 
     const batchable = new (Batchable(undefined, { batchSize: 2 }))();
 
-    const output = await batchable.batchExecute(
+    const output = await batchable.batchProcess(
       items,
       batchHandler,
       extractUnprocessedItems,
@@ -147,7 +147,7 @@ describe('Batchable', function () {
       throttle: 1,
     }))();
 
-    const output = await batchable.batchExecute(
+    const output = await batchable.batchProcess(
       items,
       batchHandler,
       extractUnprocessedItems,

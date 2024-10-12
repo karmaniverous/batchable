@@ -4,31 +4,88 @@
 
 <!-- /TYPEDOC_EXCLUDE -->
 
-# batchable
+# Batchable Mixin
 
-**EntityManager implements rational indexing & cross-shard querying at scale in your NoSQL database so you can focus on your application logic.**
+**In the real world, most async operations against large data sets need to be batched and throttled.**
 
-I've just released a full Typescript refactor. Everything works beatuifully, but I'm still fleshing out [the documentation](https://karmanivero.us/projects/batchable/intro/).
+The [`Batchable`](https://docs.karmanivero.us/batchable/functions/Batchable.html) mixin adds a public `batchProcess` method to your Typescript or Javascript class, providing a simple, configurable pattern for batching and throttling async operations.
 
-If you have any questions, please [start a discussion](https://github.com/karmaniverous/batchable/discussions). Otherwise stay tuned!
+Batchable and any derived classes are [Loggable](https://github.com/karmaniverous/loggable), so you can configurably track the progress of batch operations on the console or with an injected logging dependency.
 
-## Why?
+## Installation
 
-Traditional relational database systems like MySQL or SQL Server implement indexing & scaling strategies at a platform level based on schemas defined at design time.
+```bash
+npm i @karmaniverous/batchable
+```
 
-NoSQL platforms like DynamoDB offer far better performance at scale, but structured index & shard keys must be defined as data elements and exploited by application logic in data retrieval & cross-shard queries. **They shift the burden of complexity from the database platform to the developer!**
+## Default Use Case
 
-EntityManager encapsulates a provider-agnostic, highly opinionated approach to the [single-table design pattern](https://aws.amazon.com/blogs/compute/creating-a-single-table-design-with-amazon-dynamodb/).
+```ts
+import { Batchable } from '@karmaniverous/batchable';
 
-With EntityManager, you can:
+type Item = Record<string, unknown>; // Your data type.
 
-- Define related data entities & structured keys wth a simple, declarative configuration format.
+// Say you have an function processBatch that processes a batch of items, for
+// example writing them to a database. Maybe not every item is processed
+// successfully, so the function returns a count of processed items and an
+// array of unprocessed ones.
 
-- Specify a partition sharding strategy that maximizes query performance while permitting planned, staged scaling over time.
+interface AsyncResult {
+  processed: number;
+  unprocessed: Item[];
+}
 
-- Add or remove structured index keys from entity data objects with a single method call.
+const processBatch = async (items: Item[]): AsyncResult =>
+  doSomethingAsync(items);
 
-- Perform paged, cross-shard, multi-index queries with a single method call.
+// Let's write a function that extracts any unprocessed items from an
+// AsyncResult.
+const extractUnprocessedItems = ({ unprocessed }: AsyncResult) => unprocessed;
+
+// Now let's create a class that keeps an array of Item and uses batchProcess
+// from the Batchable mixin to process them. Unless otherwise specified,
+// default Batchable options are:
+// - batchSize: 25
+// - delayIncrement: 100
+// - maxRetries: 5
+// - throttle: 10
+class MyBatchableClass extends Batchable() {
+  items: Item[] = []; // Your class data.
+
+  async processItems() {
+    // batchProcess will...
+    // - break items into batches of no more than `batchSize` items, and
+    // - process up to `throttle` batches in parallel, and
+    // - write a debug log message for each batch attempted, and
+    // - wait `delayIncrement` ms with exponential backoff to retry failed batches, and
+    // - throw an exception after `maxRetries` failed retries, and
+    // - return an array of AsyncResults generated during batch processing.
+    return this.batchProcess(this.items, processBatch, extractUnprocessedItems);
+  }
+}
+```
+
+## Customizing Batchable
+
+The Batchable function takes the following parameters:
+
+| Parameter          | Type                                                                                               | Default    | Description                                                                                                                                                   |
+| ------------------ | -------------------------------------------------------------------------------------------------- | ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `Base`             | `Constructor`                                                                                      | `class {}` | The base class to extend.                                                                                                                                     |
+| `batchableOptions` | `BatchableOptions`                                                                                 | `{}`       | Overrides to default Batchable options. These will apply to all calls to `processItems` within a given class instance unless overridden at the function call. |
+| `logger`           | Logger object.                                                                                     | `console`  | The logger object to use for logging. Accessible on the class instance at `this.logger`.                                                                      |
+| `loggableOptions`  | [`LoggableOptions`](https://docs.karmanivero.us/loggable/interfaces/loggable.LoggableOptions.html) | `{}`       | Overrides to default Loggable options. Accessible on the class instance at `this.loggableOptions`.                                                            |
+
+Default Batchable options are:
+
+| Option           | Type     | Default | Description                                                                                     |
+| ---------------- | -------- | ------- | ----------------------------------------------------------------------------------------------- |
+| `batchSize`      | `number` | `25`    | The number of items to process in each batch.                                                   |
+| `delayIncrement` | `number` | `100`   | The number of milliseconds to wait before retrying a failed batch, with 2x exponential backoff. |
+| `maxRetries`     | `number` | `5`     | The number of times to retry a failed batch before throwing an exception.                       |
+| `throttle`       | `number` | `10`    | The number of batches to process in parallel.                                                   |
+
+[Click here](https://github.com/karmaniverous/loggable) more information on the Loggable mixin.
 
 ---
 

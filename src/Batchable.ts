@@ -50,7 +50,7 @@ export function Batchable<T extends Constructor<object>, Logger = Console>(
      *
      * @returns Output array.
      */
-    async batchExecute<Item, Output>(
+    async batchProcess<Item, Output>(
       items: Item[],
       batchHandler: (items: Item[]) => Promise<Output>,
       extractUnprocessedItems?: (output: Output) => Item[] | undefined,
