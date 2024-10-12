@@ -1,9 +1,3 @@
-<!-- TYPEDOC_EXCLUDE -->
-
-> [API Documentation](https://docs.karmanivero.us/batchable/) • [CHANGELOG](https://github.com/karmaniverous/batchable/tree/main/CHANGELOG.md)
-
-<!-- /TYPEDOC_EXCLUDE -->
-
 # Batchable Mixin
 
 **In the real world, most async operations against large data sets need to be batched and throttled.**
@@ -11,6 +5,12 @@
 The [`Batchable`](https://docs.karmanivero.us/batchable/functions/Batchable.html) mixin adds a public `batchProcess` method to your Typescript or Javascript class, providing a simple, configurable pattern for batching and throttling async operations.
 
 Batchable and any derived classes are [Loggable](https://github.com/karmaniverous/loggable), so you can configurably track the progress of batch operations on the console or with an injected logging dependency.
+
+<!-- TYPEDOC_EXCLUDE -->
+
+> [API Documentation](https://docs.karmanivero.us/batchable/) • [CHANGELOG](https://github.com/karmaniverous/batchable/tree/main/CHANGELOG.md)
+
+<!-- /TYPEDOC_EXCLUDE -->
 
 ## Installation
 
