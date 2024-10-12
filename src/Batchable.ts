@@ -1,122 +1,101 @@
-import { cluster, isFunction, parallel } from 'radash';
+import { Loggable, type LoggableOptions } from '@karmaniverous/loggable';
+import { cluster, parallel, shake } from 'radash';
 import { setTimeout } from 'timers/promises';
 
-import type { BatchOptions } from './BatchOptions';
-import { conditionalize } from './conditionalize';
-import type { LoggerOptions } from './LoggableOptions';
+import type { BatchableOptions } from './BatchableOptions';
+import type { Constructor } from './Constructor';
 
 /**
- * Batchable base class options.
+ * Batchable mixin. Adds throttled batch execution to base class or serves as batchable base class for derived class.
  *
- * @category Client
+ * @param Base - Base class (defaults to empty class).
+ * @param batchableOptions -  Partial {@link BatchableOptions | `BatchableOptions`} object.
+ * @param logger - Logger object (defaults to `console`).
+ * @param loggableOptions - Partial {@link LoggableOptions | `LoggableOptions`} object.
+ *
+ * @remarks
+ * The `batchableOptions` parameter is merged with the following default options and exposed at `this.batchableOptions`:
+ * - `batchSize`: 25
+ * - `delayIncrement`: 100
+ * - `maxRetries`: 5
+ * - `throttle`: 10
  */
-export type BatchableOptions = BatchOptions & LoggerOptions;
-
-/**
- * Batchable base class.
- *
- * @typeParam Options - Options type extended from {@link BatchableOptions | `BatchableOptions`}.
- *
- * @category Client
- */
-export abstract class Batchable<Options extends BatchableOptions> {
-  #options: Required<Options>;
-
-  /**
-   * Batchable base constructor.
-   * @param options - Options object extended from {@link BatchableOptions | `BatchableOptions`}.
-   */
-  constructor({
-    batchSize = 25,
-    delayIncrement = 100,
-    maxRetries = 5,
-    throttle = 10,
-    logger = console,
-    logInternals = false,
-    ...childOptions
-  }: Options) {
-    if (!isFunction(logger.debug))
-      throw new Error('logger must support debug method');
-    if (!isFunction(logger.error))
-      throw new Error('logger must support error method');
-
-    this.#options = {
-      batchSize,
-      delayIncrement,
-      maxRetries,
-      throttle,
-      logInternals,
-      logger: {
-        ...logger,
-        debug: conditionalize(logger.debug, logInternals),
+export function Batchable<T extends Constructor<object>, Logger = Console>(
+  Base: T = class {} as T,
+  batchableOptions: Partial<BatchableOptions> = {},
+  logger: Logger = console as Logger,
+  loggableOptions: Partial<LoggableOptions> = {},
+) {
+  return class extends Loggable(Base, logger, loggableOptions) {
+    batchableOptions: BatchableOptions = Object.assign(
+      {
+        batchSize: 25,
+        delayIncrement: 100,
+        maxRetries: 5,
+        throttle: 10,
       },
-      ...childOptions,
-    } as Required<Options>;
-  }
+      shake(batchableOptions),
+    );
 
-  /**
-   * Returns the options used to create the Batchable instance.
-   */
-  get options() {
-    return this.#options;
-  }
+    /**
+     * Processes items asynchronously in a throttled, batched operation. If `extractUnprocessedItems` is provided, extracts & retries unprocessed items up to `maxRetries`.
+     *
+     * @param items - Items to process in batch.
+     * @param batchHandler - Function to process an individual batch.
+     * @param extractUnprocessedItems - Function to extract unprocessed items from an individual batch output.
+     * @param batchableOptions - Partial {@link BatchableOptions | `BatchableOptions`} object to overrides class defaults.
+     *
+     * @typeParam Item - Input item type.
+     * @typeParam Output - Output type.
+     *
+     * @returns Output array.
+     */
+    async batchExecute<Item, Output>(
+      items: Item[],
+      batchHandler: (items: Item[]) => Promise<Output>,
+      extractUnprocessedItems?: (output: Output) => Item[] | undefined,
+      batchableOptions: Partial<BatchableOptions> = {},
+    ): Promise<Output[]> {
+      // Resolve batch options.
+      const { batchSize, delayIncrement, maxRetries, throttle } = Object.assign(
+        {},
+        this.batchableOptions,
+        shake(batchableOptions),
+      );
 
-  /**
-   * Executes a batch operation.
-   *
-   * @param items - Items to batch execute.
-   * @param batchHandler - Function to execute the batch.
-   * @param getUnprocessedItems - Function to get unprocessed items from the output.
-   * @param options - Batch options.
-   *
-   * @typeParam Item - Input item type.
-   * @typeParam Output - Output type.
-   *
-   * @returns Output array.
-   */
-  protected async batchExecute<Item, Output>(
-    items: Item[],
-    batchHandler: (items: Item[]) => Promise<Output>,
-    getUnprocessedItems?: (output: Output) => Item[] | undefined,
-    {
-      batchSize = this.options.batchSize,
-      delayIncrement = this.options.delayIncrement,
-      maxRetries = this.options.maxRetries,
-      throttle = this.options.throttle,
-    }: BatchOptions = {},
-  ): Promise<Output[]> {
-    const batches = cluster(items, batchSize);
-    const outputs: Output[] = [];
+      const batches = cluster(items, batchSize);
+      const outputs: Output[] = [];
 
-    await parallel(throttle!, batches, async (batch) => {
-      let delay = 0;
-      let retry = 0;
+      await parallel(throttle, batches, async (batch) => {
+        let delay = 0;
+        let retry = 0;
 
-      while (batch.length) {
-        if (delay) await setTimeout(delay);
+        while (batch.length) {
+          if (delay) await setTimeout(delay);
 
-        const output = await batchHandler(batch);
+          const output = await batchHandler(batch);
 
-        this.options.logger!.debug('executed batch', {
-          batch,
-          delay,
-          retry,
-          output,
-        });
+          this.logger.debug('executed batch', {
+            batch,
+            delay,
+            retry,
+            output,
+          });
 
-        outputs.push(output);
+          outputs.push(output);
 
-        batch = getUnprocessedItems?.(output) ?? [];
+          batch = extractUnprocessedItems?.(output) ?? [];
 
-        if (batch.length) {
-          if (retry === maxRetries) throw new Error('max retries exceeded');
+          if (batch.length) {
+            if (retry === maxRetries) throw new Error('max retries exceeded');
 
-          delay = delay ? delay * 2 : delayIncrement!;
-          retry++;
+            delay = delay ? delay * 2 : delayIncrement;
+            retry++;
+          }
         }
-      }
-    });
+      });
 
-    return outputs;
-  }
+      return outputs;
+    }
+  };
 }

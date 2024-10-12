@@ -2,7 +2,6 @@ import aliasPlugin, { Alias } from '@rollup/plugin-alias';
 import commonjsPlugin from '@rollup/plugin-commonjs';
 import jsonPlugin from '@rollup/plugin-json';
 import { nodeResolve } from '@rollup/plugin-node-resolve';
-import stripPlugin from '@rollup/plugin-strip';
 import typescriptPlugin from '@rollup/plugin-typescript';
 import type { InputOptions, RollupOptions } from 'rollup';
 import dtsPlugin from 'rollup-plugin-dts';
@@ -12,7 +11,6 @@ import pkg from './package.json' assert { type: 'json' };
 const outputPath = `dist`;
 
 const commonPlugins = [
-  stripPlugin({ include: ['**/*.ts'] }),
   commonjsPlugin(),
   jsonPlugin(),
   nodeResolve(),

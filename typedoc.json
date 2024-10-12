@@ -17,11 +17,7 @@
     "includeCategories": true
   },
   "out": "./docs",
-  "plugin": [
-    "typedoc-plugin-mdn-links",
-    "typedoc-plugin-replace-text",
-    "typedoc-plugin-zod"
-  ],
+  "plugin": ["typedoc-plugin-mdn-links", "typedoc-plugin-replace-text"],
   "projectDocuments": ["./CHANGELOG.md"],
   "replaceText": {
     "replacements": [

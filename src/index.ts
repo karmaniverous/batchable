@@ -1,5 +1,7 @@
 /**
  * @module batchable
  */
-export { Batchable, type BatchableOptions } from './Batchable';
-export type { BatchOptions } from './BatchOptions';
+export { Batchable } from './Batchable';
+export { type BatchableOptions } from './BatchableOptions';
+export type { Constructor } from './Constructor';
+export { Loggable, type LoggableOptions } from '@karmaniverous/loggable';
