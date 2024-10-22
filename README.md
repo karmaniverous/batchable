@@ -1,3 +1,5 @@
+> **This library is deprecated in favor of [@karmaniverous/batch-process](https://github.com/karmaniverous/batch-process), which takes a much more generic and SOLID approach to the problem. See [this article](https://karmanivero.us/blog/mixin-it-up-picking-the-right-problem-to-solve/) for an analysis of the issues with the mixin approach.**
+
 # Batchable Mixin
 
 **In the real world, most async operations against large data sets need to be batched and throttled.**
